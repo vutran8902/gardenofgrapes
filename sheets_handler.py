@@ -13,3 +13,17 @@ def add_subscriber(name, email):
     """Add a new subscriber to the Google Sheet"""
     row = [name, email]
     sheet.append_row(row)
+
+def get_subscribers():
+    """Retrieve all subscribers from the Google Sheet"""
+    # Get all values from the sheet
+    values = sheet.get_all_values()
+    
+    # Skip the header row if it exists
+    if values and values[0] == ['Name', 'Email']:
+        values = values[1:]
+    
+    # Convert the list of lists to a list of dictionaries
+    subscribers = [{'name': row[0], 'email': row[1]} for row in values]
+    
+    return subscribers
