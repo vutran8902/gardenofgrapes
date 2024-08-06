@@ -1,0 +1,2 @@
+# Subscriber List
+# Format: Name,Email

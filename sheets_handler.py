@@ -14,8 +14,8 @@ def add_subscriber(name, email):
     row = [name, email]
     sheet.append_row(row)
 
-def get_subscribers():
-    """Retrieve all subscribers from the Google Sheet"""
+def update_subscribers_file():
+    """Retrieve all subscribers from the Google Sheet and write to a text file"""
     # Get all values from the sheet
     values = sheet.get_all_values()
     
@@ -23,7 +23,9 @@ def get_subscribers():
     if values and values[0] == ['Name', 'Email']:
         values = values[1:]
     
-    # Convert the list of lists to a list of dictionaries
-    subscribers = [{'name': row[0], 'email': row[1]} for row in values]
-    
-    return subscribers
+    # Write to subscribers.txt
+    with open('subscribers.txt', 'w') as f:
+        f.write("# Subscriber List\n")
+        f.write("# Format: Name,Email\n")
+        for row in values:
+            f.write(f"{row[0]},{row[1]}\n")

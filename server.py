@@ -1,23 +1,12 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler, SimpleHTTPRequestHandler
 from urllib.parse import parse_qs
 import json
-from sheets_handler import add_subscriber, get_subscribers
+from sheets_handler import add_subscriber, update_subscribers_file
 
 class RequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == '/':
             self.path = '/index.html'
-        elif self.path == '/subscribers':
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-            subscribers = get_subscribers()
-            html = "<html><body><h1>Subscribers</h1><ul>"
-            for sub in subscribers:
-                html += f"<li>{sub['name']} - {sub['email']}</li>"
-            html += "</ul></body></html>"
-            self.wfile.write(html.encode())
-            return
         return SimpleHTTPRequestHandler.do_GET(self)
 
     def do_POST(self):
@@ -29,6 +18,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         email = data.get('email', [''])[0]
 
         add_subscriber(name, email)
+        update_subscribers_file()
 
         self.send_response(303)
         self.send_header('Location', '/thank_you.html')
