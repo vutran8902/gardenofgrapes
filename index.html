@@ -11,19 +11,27 @@
         <header>
             <h1>Garden of Grapes</h1>
         </header>
-        <main>
-            <h2>Discover Delicious Grape-Inspired Recipes!</h2>
-            <p>Join our community and receive exclusive updates on our latest grape-infused cookbook releases.</p>
-            <form id="subscription-form" method="POST" action="/">
-                <input type="text" id="name" name="name" placeholder="Enter your name" required>
-                <input type="email" id="email" name="email" placeholder="Enter your email" required>
-                <button type="submit">Subscribe</button>
-            </form>
+        <main id="main-content">
+            <div id="subscription-section">
+                <h2>Discover Delicious Grape-Inspired Recipes!</h2>
+                <p>Join our community and receive exclusive updates on our latest grape-infused cookbook releases.</p>
+                <form id="subscription-form">
+                    <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+            <div id="thank-you-section" style="display: none;">
+                <h2>Thank You for Subscribing!</h2>
+                <p>We're excited to have you join our community. You'll soon receive our latest grape-inspired recipes and updates.</p>
+                <button id="return-home">Return to Home</button>
+            </div>
         </main>
         <footer>
             <p>&copy; 2024 Garden of Grapes. All rights reserved.</p>
         </footer>
     </div>
+    <script src="script.js"></script>
 </body>
 </html>
 <!DOCTYPE html>

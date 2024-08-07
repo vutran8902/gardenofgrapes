@@ -70,6 +70,8 @@ button {
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
+    display: inline-block;
+    text-decoration: none;
 }
 
 button:hover {
@@ -80,6 +82,14 @@ button:hover {
 
 button:active {
     transform: translateY(0);
+}
+
+#thank-you-section {
+    text-align: center;
+}
+
+#return-home {
+    margin-top: 1rem;
 }
 
 footer {
