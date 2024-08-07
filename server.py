@@ -3,10 +3,8 @@ from urllib.parse import parse_qs
 import json
 from sheets_handler import add_subscriber, update_subscribers_file
 
-class RequestHandler(BaseHTTPRequestHandler):
+class RequestHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
-        if self.path == '/':
-            self.path = '/index.html'
         return SimpleHTTPRequestHandler.do_GET(self)
 
     def do_POST(self):
