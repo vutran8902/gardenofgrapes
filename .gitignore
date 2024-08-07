@@ -10,15 +10,3 @@ client_secret.json
 # Python cache files
 __pycache__/
 *.pyc
-# Ignore subscriber list
-subscribers.txt
-
-# Ignore Google Sheets credentials
-client_secret.json
-
-# Ignore environment variables file
-.env
-
-# Python cache files
-__pycache__/
-*.pyc
