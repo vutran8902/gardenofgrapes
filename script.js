@@ -9,13 +9,26 @@ document.addEventListener('DOMContentLoaded', function() {
         const name = document.getElementById('name').value;
         const email = document.getElementById('email').value;
 
-        // Here you would typically send the data to your server
-        // For now, we'll just log it to the console
-        console.log('Submitted:', { name, email });
-
-        // Show the thank you section
-        subscriptionSection.style.display = 'none';
-        thankYouSection.style.display = 'block';
+        // Send the data to the server
+        fetch('/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`
+        }).then(response => {
+            if (response.ok) {
+                // Show the thank you section
+                subscriptionSection.style.display = 'none';
+                thankYouSection.style.display = 'block';
+            } else {
+                console.error('Submission failed');
+                alert('Submission failed. Please try again.');
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+        });
     });
 
     returnHomeButton.addEventListener('click', function() {

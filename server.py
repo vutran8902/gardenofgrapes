@@ -34,7 +34,7 @@ if __name__ == '__main__':
     run()
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from urllib.parse import parse_qs
-from sheets_handler import add_subscriber
+from sheets_handler import add_subscriber, get_subscribers
 
 class RequestHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
@@ -44,6 +44,12 @@ class RequestHandler(SimpleHTTPRequestHandler):
             self.end_headers()
             with open('thank_you.html', 'rb') as file:
                 self.wfile.write(file.read())
+        elif self.path == '/view_subscribers':
+            self.send_response(200)
+            self.send_header('Content-type', 'text/plain')
+            self.end_headers()
+            subscribers = get_subscribers()
+            self.wfile.write(subscribers.encode())
         else:
             return SimpleHTTPRequestHandler.do_GET(self)
 
@@ -58,10 +64,11 @@ class RequestHandler(SimpleHTTPRequestHandler):
         # Save user input to secure data center
         add_subscriber(name, email)
 
-        # Redirect to thank you page
-        self.send_response(303)
-        self.send_header('Location', '/thank_you.html')
+        # Send a success response
+        self.send_response(200)
+        self.send_header('Content-type', 'text/plain')
         self.end_headers()
+        self.wfile.write(b"Subscription successful")
 
 def run(server_class=HTTPServer, handler_class=RequestHandler, port=8000):
     server_address = ('', port)

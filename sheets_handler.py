@@ -34,6 +34,16 @@ def update_subscribers_file():
         f.write("# Format: Name,Email\n")
         for row in values:
             f.write(f"{row[0]},{row[1]}\n")
+
+def get_subscribers():
+    """Retrieve all subscribers from the Google Sheet"""
+    values = sheet.get_all_values()
+    
+    # Skip the header row if it exists
+    if values and values[0] == ['Name', 'Email']:
+        values = values[1:]
+    
+    return "\n".join([f"{row[0]}, {row[1]}" for row in values])
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import os
