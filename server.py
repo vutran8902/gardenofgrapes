@@ -5,6 +5,8 @@ from sheets_handler import add_subscriber, update_subscribers_file
 
 class RequestHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
+        if self.path == '/thank_you.html':
+            self.path = 'thank_you.html'
         return SimpleHTTPRequestHandler.do_GET(self)
 
     def do_POST(self):
