@@ -1,6 +1,8 @@
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from urllib.parse import parse_qs
 from sheets_handler import add_subscriber
+import json
+import traceback
 
 class RequestHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
@@ -9,20 +11,26 @@ class RequestHandler(SimpleHTTPRequestHandler):
         return SimpleHTTPRequestHandler.do_GET(self)
 
     def do_POST(self):
-        content_length = int(self.headers['Content-Length'])
-        post_data = self.rfile.read(content_length).decode('utf-8')
-        data = parse_qs(post_data)
+        try:
+            content_length = int(self.headers['Content-Length'])
+            post_data = self.rfile.read(content_length).decode('utf-8')
+            data = parse_qs(post_data)
 
-        name = data.get('name', [''])[0]
-        email = data.get('email', [''])[0]
+            name = data.get('name', [''])[0]
+            email = data.get('email', [''])[0]
 
-        # Save user input to secure data center
-        add_subscriber(name, email)
+            # Save user input to secure data center
+            add_subscriber(name, email)
 
-        # Redirect to thank you page
-        self.send_response(303)
-        self.send_header('Location', '/thank_you.html')
-        self.end_headers()
+            # Send a successful response
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({'status': 'success'}).encode())
+        except Exception as e:
+            print(f"Error in do_POST: {str(e)}")
+            print(traceback.format_exc())
+            self.send_error(500, f"Internal Server Error: {str(e)}")
 
 def run(server_class=HTTPServer, handler_class=RequestHandler, port=8000):
     server_address = ('', port)

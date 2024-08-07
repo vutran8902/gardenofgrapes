@@ -17,13 +17,17 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             body: `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`
         }).then(response => {
-            if (response.ok) {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        }).then(data => {
+            if (data.status === 'success') {
                 // Show the thank you section
                 subscriptionSection.style.display = 'none';
                 thankYouSection.style.display = 'block';
             } else {
-                console.error('Submission failed');
-                alert('Submission failed. Please try again.');
+                throw new Error('Submission failed');
             }
         }).catch(error => {
             console.error('Error:', error);
