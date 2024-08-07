@@ -15,18 +15,26 @@ class RequestHandler(SimpleHTTPRequestHandler):
             return SimpleHTTPRequestHandler.do_GET(self)
 
     def do_POST(self):
+        print("Received POST request")  # Debug print
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length).decode('utf-8')
+        print(f"POST data: {post_data}")  # Debug print
         data = parse_qs(post_data)
 
         name = data.get('name', [''])[0]
         email = data.get('email', [''])[0]
+        print(f"Name: {name}, Email: {email}")  # Debug print
 
         add_subscriber(name, email)
         update_subscribers_file()
 
         self.send_response(303)
         self.send_header('Location', '/thank_you.html')
+        self.end_headers()
+
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self.send_header('Allow', 'GET, POST, OPTIONS')
         self.end_headers()
 
 def run(server_class=HTTPServer, handler_class=RequestHandler, port=8000):
