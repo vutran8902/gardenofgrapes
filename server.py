@@ -5,13 +5,8 @@ from sheets_handler import add_subscriber
 class RequestHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
         if self.path == '/thank_you.html':
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-            with open('thank_you.html', 'rb') as file:
-                self.wfile.write(file.read())
-        else:
-            return SimpleHTTPRequestHandler.do_GET(self)
+            self.path = '/thank_you.html'
+        return SimpleHTTPRequestHandler.do_GET(self)
 
     def do_POST(self):
         content_length = int(self.headers['Content-Length'])
